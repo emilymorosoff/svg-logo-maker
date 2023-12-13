@@ -1,3 +1,4 @@
+const fs = require('fs');
 const inquirer = require('inquirer');
 const { Triangle, Circle, Square, Rectangle, Ellipse, Heart } = require('./lib/shapes');
 
@@ -31,3 +32,35 @@ inquirer.prompt([
 }).catch(error => {
     console.error('An error occurred:', error);
 });
+
+function createLogo(answers) {
+    let shape;
+    switch (answers.shape) {
+        case 'Triangle':
+            shape = new Triangle(answers.shapeColor);
+            break;
+        case 'Circle':
+            shape = new Circle(answers.shapeColor);
+            break;
+        case 'Square':
+            shape = new Square(answers.shapeColor);
+            break;
+        case 'Rectangle':
+            shape = new Rectangle(answers.shapeColor);
+            break;
+        case 'Ellipse':
+            shape = new Ellipse(answers.shapeColor);
+            break;
+        case 'Heart':
+            shape = new Heart(answers.shapeColor);
+            break;
+    }
+
+    const svgContent = shape.render();
+    const finalSvg = svgContent.replace('</svg>', `<text x="50%" y="50%" fill="${answers.textColor}" dominant-baseline="middle" text-anchor="middle">${answers.text}</text></svg>`);
+
+    fs.writeFile('logo.svg', finalSvg, (err) => {
+        if (err) throw err;
+        console.log('Generated logo.svg');
+    });
+}
