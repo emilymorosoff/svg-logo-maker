@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import inquirer from 'inquirer';
 import { Triangle, Circle, Square, Rectangle, Ellipse, Heart } from './lib/shapes.js';
 
@@ -54,13 +55,24 @@ function createLogo(answers) {
         case 'Heart':
             shape = new Heart(answers.shapeColor);
             break;
+        default:
+            throw new Error('Invalid shape selected');
     }
 
     const svgContent = shape.render();
     const finalSvg = svgContent.replace('</svg>', `<text x="50%" y="50%" fill="${answers.textColor}" dominant-baseline="middle" text-anchor="middle">${answers.text}</text></svg>`);
 
-    fs.writeFile('logo.svg', finalSvg, (err) => {
+
+    const outputDir = './examples';
+    const outputPath = path.join(outputDir, 'logo.svg');
+
+
+    if (!fs.existsSync(outputDir)){
+        fs.mkdirSync(outputDir);
+    }
+
+    fs.writeFile(outputPath, finalSvg, (err) => {
         if (err) throw err;
-        console.log('Generated logo.svg');
+        console.log(`Generated logo.svg in the ${outputDir} folder`);
     });
 }
