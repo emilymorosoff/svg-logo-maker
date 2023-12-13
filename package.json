@@ -1,13 +1,14 @@
 {
   "name": "svg-logo-maker",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Node.js application to create custom SVG logos",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["svg", "logo", "generator"],
+  "author": "Your Name",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^9.2.12"
