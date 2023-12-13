@@ -8,7 +8,7 @@
     "test": "jest"
   },
   "keywords": ["svg", "logo", "generator"],
-  "author": "Your Name",
+  "author": "Emily Morosoff",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^9.2.12"
