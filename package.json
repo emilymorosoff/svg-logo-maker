@@ -1,19 +1,30 @@
 {
-  "name": "svg-logo-maker",
-  "version": "1.0.0",
-  "description": "A Node.js application to create custom SVG logos",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "jest"
-  },
-  "keywords": ["svg", "logo", "generator"],
-  "author": "Emily Morosoff",
-  "license": "ISC",
-  "dependencies": {
-    "inquirer": "^9.2.12"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0"
-  }
+    "name": "svg-logo-maker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest",
+        "devStart": "nodemon index.js"
+    },
+    "devDependencies": {
+        "@babel/preset-env": "^7.23.6",
+        "@babel/preset-react": "^7.23.3",
+        "jest": "^27.0.0"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react"
+        ]
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.2",
+        "inquirer": "^8.2.4",
+        "nodemon": "^3.0.2",
+        "svg.js": "^2.7.1"
+    }
 }

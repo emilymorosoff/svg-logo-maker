@@ -1,78 +1,71 @@
-import fs from 'fs';
-import path from 'path';
-import inquirer from 'inquirer';
-import { Triangle, Circle, Square, Rectangle, Ellipse, Heart } from './lib/shapes.js';
+const fs = require('fs').promises;
+const inquirer = require('inquirer');
+const { Triangle, Circle, Square, Rectangle, Ellipse, Heart } = require('./lib/shapes');
 
 inquirer.prompt([
     {
-        type: 'input',
         name: 'text',
-        message: 'What text do you want on the logo? (max 3 characters)',
-        validate: input => input.length <= 3 || 'Text must be a maximum of 3 characters long'
+        message: 'Enter the text for the logo (up to three characters):',
+        validate: (input) => {
+            return input.length > 0 && input.length <= 3;
+        }
     },
     {
-        type: 'input',
         name: 'textColor',
-        message: 'What color do you want the text to be? (name or hex code)',
+        message: 'Enter the text color or hexadecimal:',
         default: 'black'
     },
     {
-        type: 'list',
         name: 'shape',
-        message: 'Choose a shape for your logo:',
+        message: 'Select a shape:',
+        type: 'list',
         choices: ['Triangle', 'Circle', 'Square', 'Rectangle', 'Ellipse', 'Heart']
     },
     {
-        type: 'input',
         name: 'shapeColor',
-        message: 'What color do you want the shape to be? (name or hex code)',
+        message: 'Enter the shape color or hexadecimal:',
         default: 'blue'
     }
-]).then(answers => {
-    createLogo(answers);
-}).catch(error => {
-    console.error('An error occurred:', error);
+]).then((answers) => {
+    const svgCode = generateSVG(answers.text, answers.textColor, answers.shape, answers.shapeColor);
+
+    fs.writeFile('logo.svg', svgCode, (err) => {
+        if (err) throw err;
+        console.log('Logo saved as logo.svg');
+    });
 });
 
-function createLogo(answers) {
-    let shape;
-    switch (answers.shape) {
+function generateSVG(text, textColor, shape, shapeColor) {
+    let shapeInstance;
+
+    switch (shape) {
         case 'Triangle':
-            shape = new Triangle(answers.shapeColor);
+            shapeInstance = new Triangle();
             break;
         case 'Circle':
-            shape = new Circle(answers.shapeColor);
+            shapeInstance = new Circle();
             break;
         case 'Square':
-            shape = new Square(answers.shapeColor);
+            shapeInstance = new Square();
             break;
         case 'Rectangle':
-            shape = new Rectangle(answers.shapeColor);
+            shapeInstance = new Rectangle();
             break;
         case 'Ellipse':
-            shape = new Ellipse(answers.shapeColor);
+            shapeInstance = new Ellipse();
             break;
         case 'Heart':
-            shape = new Heart(answers.shapeColor);
+            shapeInstance = new Heart();
             break;
         default:
-            throw new Error('Invalid shape selected');
+            shapeInstance = null;
     }
 
-    const svgContent = shape.render();
-    const finalSvg = svgContent.replace('</svg>', `<text x="50%" y="50%" fill="${answers.textColor}" dominant-baseline="middle" text-anchor="middle">${answers.text}</text></svg>`);
-
-
-    const outputDir = './examples';
-    const outputPath = path.join(outputDir, 'logo.svg');
-
-
-    if (!fs.existsSync(outputDir)){
-        fs.mkdirSync(outputDir);
+    if (shapeInstance) {
+        shapeInstance.setColor(shapeColor);
+        const shapeSVG = shapeInstance.render();
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200">${shapeSVG}<text x="150" y="110" text-anchor="middle" fill="${textColor}" font-size="48">${text}</text></svg>`;
+    } else {
+        throw new Error('Invalid shape selected');
     }
-
-    fs.writeFile(outputPath, finalSvg, (err) => {
-        if (err) throw err;
-        console.log(`Generated logo.svg in the ${outputDir} folder`);
-    });
 }
