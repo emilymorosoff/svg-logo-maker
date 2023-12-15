@@ -2,7 +2,7 @@
 
 ## Demonstration 🎬
 Watch a demonstration of the app here:
-[![Alt text for screen readers](link-to-video-or-image)](link-to-demo)
+[![Alt text for screen readers](https://github.com/emilymorosoff/svg-logo-maker/blob/4830b18ccb92190d0649cd29653f1ed598ec799b/svg-thumbnail.jpg)](https://youtu.be/eYemEuF2nUQ)
 
 ## Table of Contents
 - [Demonstration](#demonstration-)
